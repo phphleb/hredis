@@ -6,7 +6,7 @@
 // Обёртка для библиотеки predis/predis
 //  с подключением конфигурации фреймворка HLEB.
 
-use \Phphleb\HRedis;
+use \Phphleb\Hredis;
 $client = (new HRedis())->client();
 $client->append($key, $value);
 
