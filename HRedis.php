@@ -6,8 +6,7 @@
 
 namespace Phphleb\Hredis;
 
-use Hleb\Main\Insert\BaseSingleton;
-
+use Hleb\Static\Settings;
 use Predis\Client;
 
 class HRedis
@@ -17,24 +16,16 @@ class HRedis
     public function __construct(array $parameters = [], array $options = [])
     {
         if (!$parameters && !$options) {
-            if (!defined('HLEB_PARAMETERS_FOR_DB')) {
-                $configDir = defined('HLEB_SEARCH_DBASE_CONFIG_FILE') ?
-                    HLEB_SEARCH_DBASE_CONFIG_FILE :
-                    HLEB_GLOBAL_DIRECTORY . '/database';
+            $type = Settings::getParam('database', 'redis.db.type');
+            $list = Settings::getParam('database', 'db.settings.list');
+            $parameters = $list[$type];
+            $options = $parameters['options'] ?? [];
 
-                $path = $configDir . '/dbase.config.php';
-                if (!file_exists($path)) {
-                    $path = $configDir . '/default.dbase.config.php';
-                }
-                require $path;
-            }
-            $config = HLEB_PARAMETERS_FOR_DB[defined('HLEB_TYPE_REDIS') ? HLEB_TYPE_REDIS : HLEB_TYPE_DB];
-
-            $parameters = $config;
-
-            $options = $config['options'] ?? [];
-
-            unset($config['options']);
+            unset($parameters['options']);
+        }
+        
+        if (!class_exists('Predis\Client')){
+            throw new \ErrorException('The predis/predis library required for operation was not found.');
         }
 
         $this->client =  new Client($parameters, $options);

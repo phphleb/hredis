@@ -1,11 +1,11 @@
 {
   "name": "phphleb/hredis",
-  "description": "PRedis connection for Micro-Framework HLEB",
+  "description": "PRedis connection for PHP Framework HLEB2",
   "type": "library",
   "keywords": [
     "predis",
     "phphleb",
-    "hleb"
+    "hleb2"
   ],
   "license": "MIT",
   "authors": [
@@ -20,7 +20,8 @@
     }
   },
   "require": {
-    "php": ">=7.0.0"
+    "php": ">=8.2.0",
+    "predis/predis" : "*"
   },
   "minimum-stability": "dev"
 }
